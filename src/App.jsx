@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { AppProvider } from './contexto/contexto';
+
 import Menu from './componentes/Menu';
 import Aleatorios from './componentes/Aleatorios'
 import Capturados from './componentes/Capturados'
@@ -12,6 +14,7 @@ import './App.css'
 function App() {
 
   return (
+     <AppProvider>
     <Router>
 
       <Menu />
@@ -25,7 +28,7 @@ function App() {
         <Route path="/Usuarios" element={<Usuarios/>} />
       </Routes>
     </Router>
-    
+    </AppProvider>
   )
 }
 
