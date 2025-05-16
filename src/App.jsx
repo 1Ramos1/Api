@@ -1,35 +1,47 @@
-import { useState } from 'react'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from
+'react-router-dom';
 import { AppProvider } from './contexto/contexto';
-
+import { supabase } from "./supabase";
 import Menu from './componentes/Menu';
-import Aleatorios from './componentes/Aleatorios'
-import Capturados from './componentes/Capturados'
-import Favoritos from './componentes/Favoritos'
-import Listas from './componentes/Listas'
-import Pokemon from './componentes/Pokemon'
-import Usuarios from './componentes/Usuarios'
-import './App.css'
-
+import Aleatorios from './componentes/Aleatorios';
+import Lista from './componentes/Listas';
+import Capturados from './componentes/Capturados';
+import Favoritos from './componentes/Favoritos';
+import Usuarios from './componentes/Usuarios';
+import Pokemon from './componentes/Pokemon';
+import Login from './componentes/login';
 function App() {
-
-  return (
-     <AppProvider>
-    <Router>
-
-      <Menu />
-
-      <Routes>
-        <Route path="/Aleatorios" element={<Aleatorios/>} />
-        <Route path="/Capturados" element={<Capturados/>} />
-        <Route path="/Favoritos" element={<Favoritos/>} />
-        <Route path="/" element={<Listas/>} />
-        <Route path="/Pokemon/:name" element={<Pokemon/>} />
-        <Route path="/Usuarios" element={<Usuarios/>} />
-      </Routes>
-    </Router>
-    </AppProvider>
-  )
+const [usuario, setUsuario] = useState(null);
+const [cargando, setCargando] = useState(true);
+useEffect(() => {
+async function verificarSesion() {
+const { data: { session } } = await supabase.auth.getSession();
+setUsuario(session?.user || null);
+setCargando(false);
 }
-
-export default App
+verificarSesion();
+// Escucha cambios en la sesión
+supabase.auth.onAuthStateChange((_event, session) => {
+setUsuario(session?.user || null);
+});
+}, []);
+if (cargando) return <p>Cargando...</p>;
+return (
+<AppProvider>
+<Router>
+{usuario && <Menu />}
+<Routes>
+<Route path="/" element={usuario ? <Lista /> : <Navigate to="/login" />} />
+<Route path="/usuarios" element={usuario ? <Usuarios /> : <Navigate to="/login" />} />
+<Route path="/Aleatorios" element={usuario ? <Aleatorios /> :<Navigate to="/login" />} />
+<Route path="/Capturados" element={usuario ? <Capturados /> :<Navigate to="/login" />} />
+<Route path="/Favoritos" element={usuario ? <Favoritos /> :<Navigate to="/login" />} />
+<Route path="/Pokemon/:name" element={usuario ? <Pokemon /> :<Navigate to="/login" />} />
+<Route path="/login" element={<Login/>} />
+</Routes>
+</Router>
+</AppProvider>
+);
+}
+export default App;
