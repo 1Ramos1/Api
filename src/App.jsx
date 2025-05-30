@@ -11,6 +11,9 @@ import Favoritos from './componentes/Favoritos';
 import Usuarios from './componentes/Usuarios';
 import Pokemon from './componentes/Pokemon';
 import Login from './componentes/login';
+import Registro from './componentes/Registro';
+import Administrador from './componentes/Administrador';
+
 function App() {
 const [usuario, setUsuario] = useState(null);
 const [cargando, setCargando] = useState(true);
@@ -38,7 +41,9 @@ return (
 <Route path="/Capturados" element={usuario ? <Capturados /> :<Navigate to="/login" />} />
 <Route path="/Favoritos" element={usuario ? <Favoritos /> :<Navigate to="/login" />} />
 <Route path="/Pokemon/:name" element={usuario ? <Pokemon /> :<Navigate to="/login" />} />
+
 <Route path="/login" element={<Login/>} />
+<Route path='/registro' element={<Registro/>} />
 </Routes>
 </Router>
 </AppProvider>

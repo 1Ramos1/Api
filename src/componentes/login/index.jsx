@@ -37,6 +37,8 @@ onChange={(e) => setPassword(e.target.value)}
 />
 <button type="submit">Iniciar sesión</button>
 </form>
+<h2>No Tiene cuenta</h2> 
+<button onClick={() => navigate(`/registro`)}>Registrese</button>
 </div>
 )
 }
