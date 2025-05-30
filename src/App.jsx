@@ -44,6 +44,7 @@ return (
 
 <Route path="/login" element={<Login/>} />
 <Route path='/registro' element={<Registro/>} />
+<Route path="/administrador" element={<Administrador/>} />
 </Routes>
 </Router>
 </AppProvider>
